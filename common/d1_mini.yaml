@@ -1,0 +1,11 @@
+esphome:
+  name: $device_host_name
+  platform: ESP8266
+  board: d1_mini
+
+<<: !include all.yaml
+
+status_led:
+  pin:
+    number: D0
+    inverted: true

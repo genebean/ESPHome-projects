@@ -1,0 +1,143 @@
+substitutions:
+  device_host_name: beanonair
+  device_written_name: Bean On Air
+  entity_prefix: BeanOnAir
+
+<<: !include common/esp32dev.yaml
+
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO19
+
+color:
+  - id: my_red
+    red: 100%
+    green: 0%
+    blue: 0%
+  - id: my_yellow
+    red: 100%
+    green: 100%
+    blue: 0%
+  - id: my_green
+    red: 0%
+    green: 100%
+    blue: 0%
+  - id: my_blue
+    red: 0%
+    green: 0%
+    blue: 100%
+  - id: my_gray
+    red: 50%
+    green: 50%
+    blue: 50%
+
+font:
+  - file: "Ubuntu Mono derivative Powerline.ttf"
+    id: ubuntu_mono_powerline_48
+    size: 48
+  - file: "Ubuntu Mono derivative Powerline.ttf"
+    id: ubuntu_mono_powerline_30
+    size: 30
+  - file: "Ubuntu Mono derivative Powerline.ttf"
+    id: ubuntu_mono_powerline_28
+    size: 28
+  - file: "Ubuntu Mono derivative Powerline.ttf"
+    id: ubuntu_mono_powerline_20
+    size: 20
+  - file: "Ubuntu Mono derivative Powerline.ttf"
+    id: ubuntu_mono_powerline_12
+    size: 12
+  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
+    id: ubuntu_mono_powerline_bold_48
+    size: 48
+  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
+    id: ubuntu_mono_powerline_bold_28
+    size: 28
+  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
+    id: ubuntu_mono_powerline_bold_20
+    size: 20
+  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
+    id: ubuntu_mono_powerline_bold_12
+    size: 12
+
+binary_sensor:
+  - platform: status
+    name: "${device_written_name} Node Status"
+    id: system_status
+  - platform: gpio
+    pin:
+      number: GPIO0
+      inverted: true
+      mode: INPUT_PULLUP
+    name: "${device_written_name} Button 0"
+    id: ${device_host_name}_button_0
+    filters:
+      - delayed_on: 10ms
+    on_press:
+      then:
+        - switch.toggle: ${device_host_name}_backlight
+  - platform: gpio
+    pin:
+      number: GPIO35
+      inverted: true
+    name: "${device_written_name} Button 1"
+    id: ${device_host_name}_button_1
+    filters:
+      - delayed_on: 10ms
+
+sensor:
+  - platform: wifi_signal
+    name: "${device_written_name} WiFi Signal"
+    update_interval: 60s
+
+# We can still control the backlight independently
+switch:
+  - platform: gpio
+    pin: GPIO4
+    name: "${device_written_name} Backlight"
+    id: ${device_host_name}_backlight
+    restore_mode: RESTORE_DEFAULT_ON
+
+
+
+image:
+  - file: "on-air.png"
+    id: my_image
+    type: RGB24
+    # resize: 100x100
+
+# 240px x 135px
+display:
+  - platform: st7789v
+    backlight_pin: GPIO4
+    cs_pin: GPIO5
+    dc_pin: GPIO16
+    reset_pin: GPIO23
+    rotation: 270
+    lambda: |-
+      it.rectangle(0,  0, it.get_width(), it.get_height(), id(my_blue));
+      it.print(5, 5, id(ubuntu_mono_powerline_12), id(my_yellow), TextAlign::TOP_LEFT, "BeanOnAir.local"); 
+
+      it.rectangle(0, 20, it.get_width(), it.get_height(), id(my_blue));
+
+      if (id(${device_host_name}_button_1).state) {
+        it.image(0, 0, id(my_image));
+        // it.filled_rectangle(3, 23, it.get_width() - 6, it.get_height() - 6, id(my_yellow));
+
+        // it.print((240 / 2), (140 / 3) * 1 + 5, id(ubuntu_mono_powerline_bold_48), id(my_blue), TextAlign::CENTER, "On Zoom");
+        // it.print((240 / 2), (140 / 3) * 2 + 5, id(ubuntu_mono_powerline_bold_28), id(my_blue), TextAlign::CENTER, "My mic may be on");
+      } else {
+        it.print((240 / 2), (140 / 3) * 1 + 5, id(ubuntu_mono_powerline_48), id(my_gray), TextAlign::CENTER, "Welcome!");
+        it.print((240 / 2), (140 / 3) * 2 + 5, id(ubuntu_mono_powerline_30), id(my_gray), TextAlign::CENTER, "Come on in");
+      }
+
+      if (id(system_status).state) {
+        it.print(235, 5, id(ubuntu_mono_powerline_12), id(my_green), TextAlign::TOP_RIGHT, "Online");
+      } else {
+        it.print(235, 5, id(ubuntu_mono_powerline_12), id(my_red), TextAlign::TOP_RIGHT, "Offline");
+      }

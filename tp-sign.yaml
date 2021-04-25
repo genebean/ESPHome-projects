@@ -1,0 +1,53 @@
+substitutions:
+  device_host_name: tp-sign
+  device_written_name: TP Sign
+
+<<: !include common/nodemcuv2.yaml
+
+font:
+  - file: "pixelmix.ttf"
+    id: pixelmix_font
+    size: 8
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+spi:
+  clk_pin: GPIO14
+  mosi_pin: GPIO13
+  miso_pin: GPIO12
+
+binary_sensor:
+  - platform: homeassistant
+    name: "TP needed in main bathroom"
+    entity_id: input_boolean.tp_needed_main_bathroom
+    id: tp_needed_main_bathroom
+  - platform: homeassistant
+    name: "TP needed in guest bathroom"
+    entity_id: input_boolean.tp_needed_guest_bathroom
+    id: tp_needed_guest_bathroom
+
+display:
+  - platform: max7219digit
+    cs_pin: GPIO15
+    num_chips: 4
+    intensity: 7 #15
+    lambda: |-
+      if (id(tp_needed_main_bathroom).state && id(tp_needed_guest_bathroom).state) {
+        it.turn_on_off(true);
+        it.print(0, 0, id(pixelmix_font), "Both");
+      } else if (id(tp_needed_main_bathroom).state) {
+        it.turn_on_off(true);
+        it.print(0, 0, id(pixelmix_font), "Main");
+      } else if (id(tp_needed_guest_bathroom).state) {
+        it.turn_on_off(true);
+        it.print(0, 0, id(pixelmix_font), "Guest");
+      } else {
+        it.turn_on_off(false);
+      }
+
+sensor:
+  - platform: wifi_signal
+    name: "${device_written_name} WiFi Signal"
+    update_interval: 60s

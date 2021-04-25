@@ -1,0 +1,55 @@
+substitutions:
+  device_host_name: discolights
+  device_written_name: Disco Lights
+
+<<: !include common/nodemcuv2.yaml
+
+time:
+  - platform: homeassistant
+    id: esptime
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 7
+        then:
+          - logger.log: "Turning lights on automatically"
+          - switch.turn_on: lower_grow_light
+          - switch.turn_on: upper_grow_light
+      - seconds: 0
+        minutes: 0
+        hours: 19
+        then:
+          - logger.log: "Turning lights off automatically"
+          - switch.turn_off: lower_grow_light
+          - switch.turn_off: upper_grow_light
+
+switch:
+  - platform: gpio
+    pin:
+      number: D5
+      inverted: yes
+    name: "Lower Grow Light"
+    icon: mdi:lightbulb
+    id: lower_grow_light
+  - platform: gpio
+    pin:
+      number: D6
+      inverted: yes
+    name: "Upper Grow Light"
+    icon: mdi:lightbulb
+    id: upper_grow_light
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${device_written_name} Button"
+    filters:
+      - delayed_on: 10ms
+    on_press:
+      then:
+        - logger.log: "Button pressed, toggling power to grow lights"
+        - switch.toggle: lower_grow_light
+        - switch.toggle: upper_grow_light

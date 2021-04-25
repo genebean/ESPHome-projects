@@ -1,0 +1,29 @@
+substitutions:
+  device_host_name: bedroomdata
+  device_written_name: Bedroom Data
+  entity_prefix: Bedroom
+
+<<: !include common/d1_mini.yaml
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+i2c:
+  sda: GPIO4
+  scl: GPIO5
+
+sensor:
+  - platform: wifi_signal
+    name: "${entity_prefix} WiFi Signal"
+    update_interval: 60s
+  - platform: bme280
+    temperature:
+      name: "${entity_prefix} Temperature"
+      oversampling: 16x
+    pressure:
+      name: "${entity_prefix} Pressure"
+    humidity:
+      name: "${entity_prefix} Humidity"
+    address: 0x76
+    update_interval: 60s
