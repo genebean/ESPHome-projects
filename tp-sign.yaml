@@ -5,7 +5,7 @@ substitutions:
 <<: !include common/nodemcuv2.yaml
 
 font:
-  - file: "pixelmix.ttf"
+  - file: "fonts/pixelmix.ttf"
     id: pixelmix_font
     size: 8
 

@@ -5,6 +5,7 @@ substitutions:
 
 <<: !include common/esp32dev.yaml
 
+<<: !include common/ttgo.yaml
 
 time:
   - platform: homeassistant
@@ -13,57 +14,6 @@ time:
 spi:
   clk_pin: GPIO18
   mosi_pin: GPIO19
-
-color:
-  - id: my_red
-    red: 100%
-    green: 0%
-    blue: 0%
-  - id: my_yellow
-    red: 100%
-    green: 100%
-    blue: 0%
-  - id: my_green
-    red: 0%
-    green: 100%
-    blue: 0%
-  - id: my_blue
-    red: 0%
-    green: 0%
-    blue: 100%
-  - id: my_gray
-    red: 50%
-    green: 50%
-    blue: 50%
-
-font:
-  - file: "Ubuntu Mono derivative Powerline.ttf"
-    id: ubuntu_mono_powerline_48
-    size: 48
-  - file: "Ubuntu Mono derivative Powerline.ttf"
-    id: ubuntu_mono_powerline_30
-    size: 30
-  - file: "Ubuntu Mono derivative Powerline.ttf"
-    id: ubuntu_mono_powerline_28
-    size: 28
-  - file: "Ubuntu Mono derivative Powerline.ttf"
-    id: ubuntu_mono_powerline_20
-    size: 20
-  - file: "Ubuntu Mono derivative Powerline.ttf"
-    id: ubuntu_mono_powerline_12
-    size: 12
-  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
-    id: ubuntu_mono_powerline_bold_48
-    size: 48
-  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
-    id: ubuntu_mono_powerline_bold_28
-    size: 28
-  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
-    id: ubuntu_mono_powerline_bold_20
-    size: 20
-  - file: "Ubuntu Mono derivative Powerline Bold.ttf"
-    id: ubuntu_mono_powerline_bold_12
-    size: 12
 
 binary_sensor:
   - platform: status
@@ -102,8 +52,6 @@ switch:
     name: "${device_written_name} Backlight"
     id: ${device_host_name}_backlight
     restore_mode: RESTORE_DEFAULT_ON
-
-
 
 image:
   - file: "on-air.png"

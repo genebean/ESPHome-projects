@@ -1,6 +1,6 @@
 substitutions:
   device_host_name: coatclosetdata
-  device_written_name: Coat Closet Data
+  device_written_name: CoatClosetData
   entity_prefix: Coat Closet
 
 <<: !include common/d1_mini.yaml
