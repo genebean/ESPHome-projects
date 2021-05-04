@@ -2,11 +2,14 @@ substitutions:
   device_host_name: tp-sign
   device_written_name: TP Sign
 
-<<: !include common/nodemcuv2.yaml
+<<: !include common/nodemcu-32s.yaml
 
 font:
   - file: "fonts/pixelmix.ttf"
-    id: pixelmix_font
+    id: pixelmix_font_6
+    size: 6
+  - file: "fonts/pixelmix.ttf"
+    id: pixelmix_font_8
     size: 8
 
 time:
@@ -14,9 +17,14 @@ time:
     id: esptime
 
 spi:
-  clk_pin: GPIO14
-  mosi_pin: GPIO13
-  miso_pin: GPIO12
+  - id: hspi
+    clk_pin: GPIO14
+    mosi_pin: GPIO13
+    miso_pin: GPIO12
+  - id: vspi
+    clk_pin: GPIO18
+    mosi_pin: GPIO23
+    miso_pin: GPIO19
 
 binary_sensor:
   - platform: homeassistant
@@ -30,19 +38,32 @@ binary_sensor:
 
 display:
   - platform: max7219digit
+    spi_id: hspi
     cs_pin: GPIO15
+    num_chips: 4
+    intensity: 7 #15
+    lambda: |-
+      if (id(tp_needed_main_bathroom).state || id(tp_needed_guest_bathroom).state) {
+        it.turn_on_off(true);
+        it.print(0, 1, id(pixelmix_font_6), "TP FOR");
+      } else {
+        it.turn_on_off(false);
+      }
+  - platform: max7219digit
+    spi_id: vspi
+    cs_pin: GPIO5
     num_chips: 4
     intensity: 7 #15
     lambda: |-
       if (id(tp_needed_main_bathroom).state && id(tp_needed_guest_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font), "Both");
+        it.print(0, 0, id(pixelmix_font_8), "Both");
       } else if (id(tp_needed_main_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font), "Main");
+        it.print(0, 0, id(pixelmix_font_8), "Main");
       } else if (id(tp_needed_guest_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font), "Guest");
+        it.print(0, 0, id(pixelmix_font_8), "Guest");
       } else {
         it.turn_on_off(false);
       }
