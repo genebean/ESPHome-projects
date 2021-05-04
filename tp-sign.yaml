@@ -6,9 +6,6 @@ substitutions:
 
 font:
   - file: "fonts/pixelmix.ttf"
-    id: pixelmix_font_6
-    size: 6
-  - file: "fonts/pixelmix.ttf"
     id: pixelmix_font_8
     size: 8
 
@@ -45,7 +42,7 @@ display:
     lambda: |-
       if (id(tp_needed_main_bathroom).state || id(tp_needed_guest_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 1, id(pixelmix_font_6), "TP FOR");
+        it.print(5, 0, id(pixelmix_font_8), "TP 4");
       } else {
         it.turn_on_off(false);
       }
@@ -57,13 +54,13 @@ display:
     lambda: |-
       if (id(tp_needed_main_bathroom).state && id(tp_needed_guest_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font_8), "Both");
+        it.print(5, 0, id(pixelmix_font_8), "Both");
       } else if (id(tp_needed_main_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font_8), "Main");
+        it.print(6, 0, id(pixelmix_font_8), "Main");
       } else if (id(tp_needed_guest_bathroom).state) {
         it.turn_on_off(true);
-        it.print(0, 0, id(pixelmix_font_8), "Guest");
+        it.print(2, 0, id(pixelmix_font_8), "Guest");
       } else {
         it.turn_on_off(false);
       }
