@@ -26,4 +26,4 @@ web_server:
     password: !secret ota_password
 
 # Activates prometheus /metrics endpoint
-prometheus:
+# prometheus:
