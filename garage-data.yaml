@@ -1,5 +1,5 @@
 substitutions:
-  device_host_name: garagedata
+  device_host_name: garage-data
   device_written_name: Garage Data
   entity_prefix: Garage
 

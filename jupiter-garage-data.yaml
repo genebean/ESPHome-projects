@@ -1,0 +1,81 @@
+substitutions:
+  name: jupiter-garage-data
+  friendly_name: Jupiter Garage Data
+  on_board_sensor_name: Garage
+  corded_sensor_name: Server Rack
+
+esphome:
+  name: jupiter-garage-data
+
+esp8266:
+  board: d1_mini
+
+# Enable Home Assistant API
+api:
+  password: "self-hosted"
+  # encryption:
+  #   key: !secret enc_key
+
+# Used by fallback Access Point (ap)
+captive_portal:
+
+# Enable logging
+logger:
+
+ota:
+  password: "self-hosted"
+
+prometheus:
+
+web_server:
+  port: 80
+  # auth:
+  #   username: admin
+  #   password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${name}-setup"
+    password: "self-hosted"
+
+# Set device time to match that of Home Assistant
+time:
+  - platform: homeassistant
+    id: esptime
+
+# Use the onboard LED to indicate system status
+status_led:
+  pin:
+    number: D0
+    inverted: true
+
+# Wired sensor
+dallas:
+  - pin: D4
+
+# The bme280 sensor on the board uses i2c
+i2c:
+  sda: D2
+  scl: D1
+
+sensor:
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    update_interval: 60s
+  - platform: dallas
+    address: 0x680000066e92ad28
+    name: "${friendly_name} ${corded_sensor_name} Temperature"
+  - platform: bme280
+    temperature:
+      name: "${friendly_name} ${on_board_sensor_name} Temperature"
+      oversampling: 16x
+    pressure:
+      name: "${friendly_name} ${on_board_sensor_name} Pressure"
+    humidity:
+      name: "${friendly_name} ${on_board_sensor_name} Humidity"
+    address: 0x76
+    update_interval: 60s

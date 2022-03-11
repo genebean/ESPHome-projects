@@ -1,5 +1,5 @@
 substitutions:
-  device_host_name: discolights
+  device_host_name: disco-lights
   device_written_name: Disco Lights
 
 <<: !include common/nodemcuv2.yaml

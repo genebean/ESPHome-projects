@@ -1,7 +1,7 @@
 substitutions:
-  device_host_name: bedroomdata
-  device_written_name: Bedroom Data
-  entity_prefix: Bedroom
+  device_host_name: coat-closet-data
+  device_written_name: Coat Closet Data
+  entity_prefix: Coat Closet
 
 <<: !include common/d1_mini.yaml
 
@@ -27,3 +27,11 @@ sensor:
       name: "${entity_prefix} Humidity"
     address: 0x76
     update_interval: 60s
+
+light:
+  - platform: fastled_clockless
+    chipset: WS2812B
+    pin: GPIO16
+    num_leds: 48
+    rgb_order: BRG
+    name: "${entity_prefix} Lights"

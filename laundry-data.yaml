@@ -1,0 +1,21 @@
+substitutions:
+  device_host_name: laundry-data
+  device_written_name: Laundry Data
+  entity_prefix: Laundry
+
+<<: !include common/d1_mini.yaml
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+dallas:
+  - pin: GPIO2
+
+sensor:
+  - platform: wifi_signal
+    name: "${entity_prefix} WiFi Signal"
+    update_interval: 60s
+  - platform: dallas
+    address: 0x350000066E508028
+    name: 'Dryer Vent Temperature'
