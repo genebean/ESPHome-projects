@@ -1,7 +1,7 @@
 substitutions:
-  device_host_name: main-bedroom-data
-  device_written_name: Main Bedroom Data
-  entity_prefix: Main Bedroom
+  device_host_name: bedroom-data
+  device_written_name: Bedroom Data
+  entity_prefix: Bedroom
 
 <<: !include common/d1_mini.yaml
 
