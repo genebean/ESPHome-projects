@@ -3,9 +3,9 @@ substitutions:
   device_written_name: Bean On Air
   entity_prefix: BeanOnAir
 
-<<: !include common/esp32dev.yaml
-
-<<: !include common/ttgo.yaml
+<<:
+  - !include common/esp32dev.yaml
+  - !include common/ttgo.yaml
 
 time:
   - platform: homeassistant
