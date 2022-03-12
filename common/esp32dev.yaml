@@ -3,4 +3,5 @@ esphome:
   platform: ESP32
   board: esp32dev
 
-<<: !include all.yaml
+packages:
+  all: !include all.yaml

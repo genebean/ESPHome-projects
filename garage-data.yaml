@@ -3,9 +3,9 @@ substitutions:
   device_written_name: Garage Data
   entity_prefix: Garage
 
-<<: !include common/esp32dev.yaml
-
-<<: !include common/ttgo.yaml
+packages:
+  esp32dev: !include common/esp32dev.yaml
+  ttgo: !include common/ttgo.yaml
 
 time:
   - platform: homeassistant

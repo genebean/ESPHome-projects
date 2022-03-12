@@ -3,7 +3,8 @@ substitutions:
   device_written_name: Laundry Data
   entity_prefix: Laundry
 
-<<: !include common/d1_mini.yaml
+packages:
+  d1_mini: !include common/d1_mini.yaml
 
 time:
   - platform: homeassistant

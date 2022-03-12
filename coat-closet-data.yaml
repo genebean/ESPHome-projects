@@ -3,7 +3,8 @@ substitutions:
   device_written_name: Coat Closet Data
   entity_prefix: Coat Closet
 
-<<: !include common/d1_mini.yaml
+packages:
+  d1_mini: !include common/d1_mini.yaml
 
 time:
   - platform: homeassistant

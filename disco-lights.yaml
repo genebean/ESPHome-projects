@@ -2,7 +2,8 @@ substitutions:
   device_host_name: disco-lights
   device_written_name: Disco Lights
 
-<<: !include common/nodemcuv2.yaml
+packages:
+  nodemcuv2: !include common/nodemcuv2.yaml
 
 time:
   - platform: homeassistant

@@ -3,4 +3,5 @@ esphome:
   platform: ESP32
   board: nodemcu-32s
 
-<<: !include all.yaml
+packages:
+  all: !include all.yaml

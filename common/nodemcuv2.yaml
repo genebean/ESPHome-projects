@@ -3,7 +3,8 @@ esphome:
   platform: ESP8266
   board: nodemcuv2
 
-<<: !include all.yaml
+packages:
+  all: !include all.yaml
 
 status_led:
   pin:

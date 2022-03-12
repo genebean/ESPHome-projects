@@ -2,7 +2,8 @@ substitutions:
   device_host_name: tp-sign
   device_written_name: TP Sign
 
-<<: !include common/nodemcu-32s.yaml
+packages:
+  'nodemcu-32s': !include common/nodemcu-32s.yaml
 
 font:
   - file: "fonts/pixelmix.ttf"
