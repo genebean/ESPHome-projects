@@ -1,0 +1,24 @@
+# https://github.com/tjhorner/wifi-desk-controller/wiki/Getting-Started
+
+substitutions:
+  device_host_name: office-desk
+  device_written_name: Office Desk
+  entity_prefix: Office Desk
+  desk_height_name: "${entity_prefix} Height"
+  target_desk_height_name: "${entity_prefix} Target Height"
+
+<<: !include common/d1_mini.yaml
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+packages:
+  standing_desk: github://tjhorner/esphome-standing-desk/configs/template.yaml
+  presets_addon: github://tjhorner/esphome-standing-desk/configs/addons/presets.yaml
+  desk_config: github://tjhorner/esphome-standing-desk/configs/desks/fully_jarvis.yaml
+
+sensor:
+  - platform: wifi_signal
+    name: "${entity_prefix} WiFi Signal"
+    update_interval: 60s
