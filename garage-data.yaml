@@ -31,7 +31,7 @@ binary_sensor:
       - delayed_on: 10ms
     on_press:
       then:
-        - switch.toggle: ${device_id_name}_backlight
+        - light.toggle: ${device_id_name}_backlight
   - platform: gpio
     pin:
       number: GPIO35
@@ -41,9 +41,15 @@ binary_sensor:
     filters:
       - delayed_on: 10ms
 
-switch:
-  - platform: gpio
+
+output:
+  - platform: ledc
     pin: GPIO4
+    id: display_backlight_ledc
+
+light:
+  - platform: monochromatic
+    output: display_backlight_ledc
     name: "${device_written_name} Backlight"
     id: ${device_id_name}_backlight
     restore_mode: RESTORE_DEFAULT_ON
@@ -73,7 +79,7 @@ sensor:
 display:
   - platform: st7789v
     model: TTGO TDisplay 135x240
-    backlight_pin: GPIO4
+    backlight_pin: no
     cs_pin: GPIO5
     dc_pin: GPIO16
     reset_pin: GPIO23
