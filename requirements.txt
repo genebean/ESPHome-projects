@@ -1,0 +1,7 @@
+setuptools
+wheel
+tornado
+pillow==10.4.0
+esptool
+esphome
+
